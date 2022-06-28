@@ -1,0 +1,15 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: uppercase-java-function-trigger
+  namespace: default
+spec:
+  broker: default
+  filter:
+    attributes:
+      type: UppercaseRequestedEvent
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: fmt-java
