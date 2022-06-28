@@ -15,6 +15,9 @@ import java.util.logging.Logger;
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.*;
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.SUBJECT;
 
+/**
+ * handle type=UpperCasedEvent event
+ */
 @Component("UpperCasedEvent")
 public class AppendStringFunction implements Function<Message<Input>, Message<Output>> {
   private static final Logger LOGGER = Logger.getLogger(AppendStringFunction.class.getName());

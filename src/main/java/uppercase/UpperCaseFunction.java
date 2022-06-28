@@ -14,6 +14,10 @@ import java.util.logging.Logger;
 
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.*;
 
+/**
+ * process type=UppercaseRequestedEvent event
+ * return type=UpperCasedEvent to broker then process by AppendStringFunction
+ */
 @Component("UppercaseRequestedEvent")
 public class UpperCaseFunction implements Function<Message<Input>, Message<Output>> {
     private static final Logger LOGGER = Logger.getLogger(
