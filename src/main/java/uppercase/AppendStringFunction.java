@@ -37,8 +37,8 @@ public class AppendStringFunction implements Function<Message<Input>, Message<Ou
     output.setOperation(httpHeaders.getFirst(SUBJECT));
     output.setOutput(input.getInput() != null ? input.getInput() + "-extra-string" : "NO DATA");
     return CloudEventMessageBuilder.withData(output)
-      .setType("AppendEvent").setId(UUID.randomUUID().toString())
-      .setSubject("append extra string")
+      .setType("DoneEvent").setId(UUID.randomUUID().toString())
+      .setSubject("Appended extra string")
       .setSource(URI.create("http://example.com/append-extra")).build();
   }
 }

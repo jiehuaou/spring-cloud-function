@@ -30,3 +30,39 @@ spec:
       apiVersion: serving.knative.dev/v1
       kind: Service
       name: fmt-java
+
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: display-java-function-trigger
+  namespace: default
+spec:
+  broker: example-broker
+  filter:
+    attributes:
+      type: DoneEvent
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: fmt-java
+
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: display2-java-function-trigger
+  namespace: default
+spec:
+  broker: example-broker
+  filter:
+    attributes:
+      type: DoneEvent
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: fmt-java
+    uri: /display
+

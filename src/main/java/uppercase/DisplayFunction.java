@@ -20,7 +20,7 @@ import static org.springframework.cloud.function.cloudevent.CloudEventMessageUti
  * does not return Message<T>
  */
 @Component("DoneEvent")
-public class DisplayFunction implements Function<Message<Input>, Message<String>> {
+public class DisplayFunction implements Function<Message<Input>, String> {
     private static final Logger LOGGER = Logger.getLogger(DisplayFunction.class.getName());
 
     public void acceptImpl(Message<Input> inputMessage) {
@@ -36,11 +36,8 @@ public class DisplayFunction implements Function<Message<Input>, Message<String>
     }
 
     @Override
-    public Message<String> apply(Message<Input> inputMessage) {
+    public String apply(Message<Input> inputMessage) {
         acceptImpl(inputMessage);
-        return CloudEventMessageBuilder.withData("ok")
-                .setType("DoneEvent").setId(UUID.randomUUID().toString())
-                .setSubject("display output")
-                .setSource(URI.create("http://example.com/append-extra")).build();
+        return "ok";
     }
 }

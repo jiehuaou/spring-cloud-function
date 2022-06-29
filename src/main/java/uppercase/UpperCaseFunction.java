@@ -41,7 +41,7 @@ public class UpperCaseFunction implements Function<Message<Input>, Message<Outpu
       output.setOutput(input.getInput() != null ? input.getInput().toUpperCase() : "NO DATA");
       return CloudEventMessageBuilder.withData(output)
         .setType("UpperCasedEvent").setId(UUID.randomUUID().toString())
-        .setSubject("Convert to UpperCase")
+        .setSubject("Converted to UpperCase")
         .setSource(URI.create("http://example.com/uppercase")).build();
   }
 }
