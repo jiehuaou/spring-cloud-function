@@ -1,0 +1,17 @@
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: ClusterDomainClaim
+metadata:
+  name: broker-ingress.knative-eventing.${KNATIVE_DOMAIN}
+spec:
+  namespace: knative-eventing
+
+---
+apiVersion: serving.knative.dev/v1alpha1
+kind: DomainMapping
+metadata:
+  name: broker-ingress.knative-eventing.$KNATIVE_DOMAIN
+spec:
+  ref:
+    name: broker-ingress
+    kind: Service
+    apiVersion: v1

@@ -17,12 +17,6 @@ public class Input {
     this.input = input;
   }
 
-  @Override
-  public String toString() {
-    return "Input{" +
-        "input='" + input + '\'' +
-        '}';
-  }
 
   public String getOutput() {
     return output;
@@ -30,5 +24,13 @@ public class Input {
 
   public void setOutput(String output) {
     this.output = output;
+  }
+
+  @Override
+  public String toString() {
+    return "Input{" +
+            "input='" + input + '\'' +
+            ", output='" + output + '\'' +
+            '}';
   }
 }
