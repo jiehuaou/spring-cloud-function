@@ -99,12 +99,58 @@ if function returns Non-CloudEvent, such as string, this text will be simply ign
 if function throw an exception, Knative will retry the call based on pre-config error-retry policy, until the message was put into DLQ finally. 
 
 
-## Function invocation
+## Function Routing Logic
 
 Spring Cloud Functions allows you to route CloudEvents to specific functions using the `Ce-Type` attribute.
 For this example, the CloudEvent is routed to the `uppercase` function. You can define multiple functions inside this project
 and then use the `Ce-Type` attribute to route different CloudEvents to different Functions.
-Check the `src/main/resources/application.properties` file for the `functionRouter` configurations.
+Check the `application.properties` file for the `functionRouter` configurations.
+
+application.properties
+```
+spring.cloud.function.definition=functionRouter
+spring.cloud.function.routing-expression=headers["ce-type"]
+```
+
+CloudEvents Sample to be sent
+```json
+{
+  'Ce-Type': "UppercaseRequestedEvent",
+  'Ce-Id': '1234',
+  'data' : any
+}
+```
+
+Knative Trigger
+```
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: uppercase-java-function-trigger
+  namespace: default
+spec:
+  broker: example-broker
+  filter:
+    attributes:
+      type: UppercaseRequestedEvent
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: fmt-java
+```
+
+Java Bean with Component Name `UppercaseRequestedEvent`
+```java
+@Component("UppercaseRequestedEvent")
+public class UpperCaseFunction implements  Function <Message<Input>, Message<Output>> 
+{ ...}
+```
+
+then this Func will be call with the CloudEvents with type `UppercaseRequestedEvent`.
+
+---
+
 Notice that you can also use `path-based` routing and send the any event type by specifying the function path,
 for this example: "$URL/uppercase".
 
