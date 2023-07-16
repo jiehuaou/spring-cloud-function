@@ -117,7 +117,7 @@ CloudEvents Sample to be sent
 {
   "Ce-Type" : "UppercaseRequestedEvent",
   "Ce-Id" : "1234" ,
-  "data" : any
+  "data" : "any"
 }
 ```
 
