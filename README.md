@@ -115,9 +115,9 @@ spring.cloud.function.routing-expression=headers["ce-type"]
 CloudEvents Sample to be sent
 ```json
 {
-  'Ce-Type': "UppercaseRequestedEvent",
-  'Ce-Id': '1234',
-  'data' : any
+  "Ce-Type" : "UppercaseRequestedEvent",
+  "Ce-Id" : "1234" ,
+  "data" : any
 }
 ```
 
