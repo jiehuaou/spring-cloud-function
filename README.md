@@ -66,6 +66,40 @@ This command will build and deploy the function into cluster.
 func deploy -v # also triggers build
 ```
 
+## Function Return
+
+```java
+@Component("UppercaseRequestedEvent")
+public class UpperCaseFunction implements Function<Message<Input>, Message<Output>> {
+    private static final Logger LOGGER = Logger.getLogger(
+      UpperCaseFunction.class.getName());
+
+  
+  @Override
+  public Message<Output> apply(Message<Input> inputMessage) {
+    HttpHeaders httpHeaders = HeaderUtils.fromMessage(inputMessage.getHeaders());
+
+      Input input = inputMessage.getPayload();
+      LOGGER.log(Level.INFO, "Input {0} ", input);
+      Output output = new Output();
+      output.setInput(input.getInput());
+      output.setOperation(httpHeaders.getFirst(SUBJECT));
+      output.setOutput(input.getInput() != null ? input.getInput().toUpperCase() : "NO DATA");
+      return CloudEventMessageBuilder.withData(output)
+        .setType("UpperCasedEvent").setId(UUID.randomUUID().toString())
+        .setSubject("Converted to UpperCase")
+        .setSource(URI.create("http://example.com/uppercase")).build();
+  }
+}
+```
+
+if function returns Cloud Event, this event will be stored into Broker for further process.
+
+if function does not return Cloud Event, this will be simlpy ignored by Knative.
+
+if function throw an exception, Knative will retry the call based on pre-config policy. 
+
+
 ## Function invocation
 
 Spring Cloud Functions allows you to route CloudEvents to specific functions using the `Ce-Type` attribute.
