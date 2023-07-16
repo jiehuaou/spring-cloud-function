@@ -4,6 +4,12 @@ Welcome to your new Function project!
 
 This sample project contains a single function based on Spring Cloud Function: `functions.CloudFunctionApplication.uppercase()`, which returns the uppercase of the data passed via CloudEvents.
 
+## Overview
+
+This Project is running as a service deployed inside Knative environment.
+
+![knative info](./overview.jpg "knative-diagram")
+
 ## Local execution
 
 Make sure that `Java 11 SDK` is installed.
