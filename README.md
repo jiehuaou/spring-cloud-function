@@ -74,7 +74,6 @@ public class UpperCaseFunction implements Function<Message<Input>, Message<Outpu
     private static final Logger LOGGER = Logger.getLogger(
       UpperCaseFunction.class.getName());
 
-  
   @Override
   public Message<Output> apply(Message<Input> inputMessage) {
     HttpHeaders httpHeaders = HeaderUtils.fromMessage(inputMessage.getHeaders());
@@ -93,11 +92,11 @@ public class UpperCaseFunction implements Function<Message<Input>, Message<Outpu
 }
 ```
 
-if function returns Cloud Event, this event will be stored into Broker for further process.
+if function returns CloudEvent, this event will be stored into Broker for further process.
 
-if function does not return Cloud Event such as string, this text will be simply ignored by Knative.
+if function returns Non-CloudEvent, such as string, this text will be simply ignored by Knative.
 
-if function throw an exception, Knative will retry the call based on pre-config policy, until the message was put into DLQ finally. 
+if function throw an exception, Knative will retry the call based on pre-config error-retry policy, until the message was put into DLQ finally. 
 
 
 ## Function invocation
