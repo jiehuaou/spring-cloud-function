@@ -95,9 +95,9 @@ public class UpperCaseFunction implements Function<Message<Input>, Message<Outpu
 
 if function returns Cloud Event, this event will be stored into Broker for further process.
 
-if function does not return Cloud Event, this will be simlpy ignored by Knative.
+if function does not return Cloud Event such as string, this text will be simply ignored by Knative.
 
-if function throw an exception, Knative will retry the call based on pre-config policy. 
+if function throw an exception, Knative will retry the call based on pre-config policy, until the message was put into DLQ finally. 
 
 
 ## Function invocation
