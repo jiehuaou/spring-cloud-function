@@ -102,7 +102,7 @@ if function throw an exception, Knative will retry the call based on pre-config 
 ## Function Routing Logic
 
 Spring Cloud Functions allows you to route CloudEvents to specific functions using the `Ce-Type` attribute.
-For this example, the CloudEvent is routed to the `uppercase` function. You can define multiple functions inside this project
+For this example, the CloudEvent is routed to the `UppercaseRequestedEvent` function. You can define multiple functions inside this project
 and then use the `Ce-Type` attribute to route different CloudEvents to different Functions.
 Check the `application.properties` file for the `functionRouter` configurations.
 
@@ -152,7 +152,7 @@ then this Func will be call with the CloudEvents with type `UppercaseRequestedEv
 ---
 
 Notice that you can also use `path-based` routing and send the any event type by specifying the function path,
-for this example: "$URL/uppercase".
+for this example: "$URL/UppercaseRequestedEvent".
 
 For the examples below, please be sure to set the `URL` variable to the route of your function.
 
@@ -180,21 +180,21 @@ Using CloudEvents `Ce-Type` routing:
 curl -v "$URL/" \
   -H "Content-Type:application/json" \
   -H "Ce-Id:1" \
-  -H "Ce-Subject:Uppercase" \
+  -H "Ce-Subject:UppercaseRequestedEvent" \
   -H "Ce-Source:cloud-event-example" \
-  -H "Ce-Type:Upper" \
+  -H "Ce-Type:UppercaseRequestedEvent" \
   -H "Ce-Specversion:1.0" \
   -d "{\"input\": \"$(whoami)\"}\""
 ```
 
 Using Path-Based routing:
 ```shell script
-curl -v "$URL/uppercase" \
+curl -v "$URL/UppercaseRequestedEvent" \
   -H "Content-Type:application/json" \
   -H "Ce-Id:1" \
-  -H "Ce-Subject:Uppercase" \
+  -H "Ce-Subject:UppercaseRequestedEvent" \
   -H "Ce-Source:cloud-event-example" \
-  -H "Ce-Type:my-event" \
+  -H "Ce-Type:UppercaseRequestedEvent" \
   -H "Ce-Specversion:1.0" \
   -d "{\"input\": \"$(whoami)\"}\""
 ```
@@ -206,21 +206,21 @@ Using CloudEvents `Ce-Type` routing:
 http -v "$URL/" \
   Content-Type:application/json \
   Ce-Id:1 \
-  Ce-Subject:Uppercase \
+  Ce-Subject:UppercaseRequestedEvent \
   Ce-Source:cloud-event-example \
-  Ce-Type:uppercase \
+  Ce-Type:UppercaseRequestedEvent \
   Ce-Specversion:1.0 \
   input=$(whoami)
 ```
 
 Using Path-Based routing:
 ```shell script
-http -v "$URL/uppercase" \
+http -v "$URL/UppercaseRequestedEvent" \
   Content-Type:application/json \
   Ce-Id:1 \
-  Ce-Subject:Uppercase \
+  Ce-Subject:UppercaseRequestedEvent \
   Ce-Source:cloud-event-example \
-  Ce-Type:uppercase \
+  Ce-Type:UppercaseRequestedEvent \
   Ce-Specversion:1.0 \
   input=$(whoami)
 ```

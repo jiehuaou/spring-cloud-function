@@ -33,6 +33,9 @@ public class SpringCloudEventsApplicationTests {
   @Autowired
   ObjectMapper objectMapper = new ObjectMapper();
 
+  /**
+   * test to route event to UppercaseRequestedEvent Function, via path '/UppercaseRequestedEvent'
+   */
   @Test
   public void testUpperCaseJsonInput() throws Exception {
 
@@ -68,6 +71,9 @@ public class SpringCloudEventsApplicationTests {
     assertThat(output.getError(), nullValue());
   }
 
+  /**
+   * test to route event to UppercaseRequestedEvent Function, with ce-type['UppercaseRequestedEvent']
+   */
   @Test
   public void testUpperCaseRoutingBasedOnType() throws Exception {
 
