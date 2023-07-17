@@ -16,7 +16,8 @@ import static org.springframework.cloud.function.cloudevent.CloudEventMessageUti
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.SUBJECT;
 
 /**
- * handle type=UpperCasedEvent event
+ * 1) handle type=UpperCasedEvent event
+ * 2) return type=DoneEvent to broker then process by DisplayFunction
  */
 @Component("UpperCasedEvent")
 public class AppendStringFunction implements Function<Message<Input>, Message<Output>> {

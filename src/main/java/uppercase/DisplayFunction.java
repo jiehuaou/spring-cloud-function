@@ -17,7 +17,8 @@ import static org.springframework.cloud.function.cloudevent.CloudEventMessageUti
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.SUBJECT;
 
 /**
- * does not return Message<T>
+ * does not return Message<T> ( CloudEvent ), 
+ * which will not be processed by Broker, meaning the event flow ending here.
  */
 @Component("DoneEvent")
 public class DisplayFunction implements Function<Message<Input>, String> {
