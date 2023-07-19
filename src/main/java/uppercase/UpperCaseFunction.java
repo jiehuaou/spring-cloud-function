@@ -13,35 +13,38 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.*;
+import static uppercase.EventType.UPPER_CASE_DONE_EVENT;
+import static uppercase.EventType.UPPER_CASE_REQUEST_EVENT;
 
 /**
  * 1) process type=UppercaseRequestedEvent event
  * 2) return type=UpperCasedEvent to broker then process by AppendStringFunction
  */
-@Component("UppercaseRequestedEvent")
+@Component(UPPER_CASE_REQUEST_EVENT)
 public class UpperCaseFunction implements Function<Message<Input>, Message<Output>> {
     private static final Logger LOGGER = Logger.getLogger(
-      UpperCaseFunction.class.getName());
+            UpperCaseFunction.class.getName());
 
-  
-  @Override
-  public Message<Output> apply(Message<Input> inputMessage) {
-    HttpHeaders httpHeaders = HeaderUtils.fromMessage(inputMessage.getHeaders());
 
-      LOGGER.log(Level.INFO, "Input CE Id:{0}", httpHeaders.getFirst(ID));
-      LOGGER.log(Level.INFO, "Input CE Spec Version:{0}", httpHeaders.getFirst(SPECVERSION));
-      LOGGER.log(Level.INFO, "Input CE Source:{0}", httpHeaders.getFirst(SOURCE));
-      LOGGER.log(Level.INFO, "Input CE Subject:{0}", httpHeaders.getFirst(SUBJECT));
+    @Override
+    public Message<Output> apply(Message<Input> inputMessage) {
+        HttpHeaders httpHeaders = HeaderUtils.fromMessage(inputMessage.getHeaders());
 
-      Input input = inputMessage.getPayload();
-      LOGGER.log(Level.INFO, "Input {0} ", input);
-      Output output = new Output();
-      output.setInput(input.getInput());
-      output.setOperation(httpHeaders.getFirst(SUBJECT));
-      output.setOutput(input.getInput() != null ? input.getInput().toUpperCase() : "NO DATA");
-      return CloudEventMessageBuilder.withData(output)
-        .setType("UpperCasedEvent").setId(UUID.randomUUID().toString())
-        .setSubject("Converted to UpperCase")
-        .setSource(URI.create("http://example.com/uppercase")).build();
-  }
+        LOGGER.log(Level.INFO, "Input CE Id:{0}", httpHeaders.getFirst(ID));
+        LOGGER.log(Level.INFO, "Input CE Spec Version:{0}", httpHeaders.getFirst(SPECVERSION));
+        LOGGER.log(Level.INFO, "Input CE Source:{0}", httpHeaders.getFirst(SOURCE));
+        LOGGER.log(Level.INFO, "Input CE Subject:{0}", httpHeaders.getFirst(SUBJECT));
+
+        Input input = inputMessage.getPayload();
+        LOGGER.log(Level.INFO, "Input {0} ", input);
+        Output output = new Output();
+        output.setInput(input.getInput());
+        output.setOperation(httpHeaders.getFirst(SUBJECT));
+        output.setOutput(input.getInput() != null ? input.getInput().toUpperCase() : "NO DATA");
+        return CloudEventMessageBuilder.withData(output)
+                .setType(UPPER_CASE_DONE_EVENT)
+                .setId(UUID.randomUUID().toString())
+                .setSubject("Converted to UpperCase")
+                .setSource(URI.create("http://example.com/uppercase")).build();
+    }
 }

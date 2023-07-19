@@ -47,12 +47,12 @@ public class SpringCloudEventsApplicationTests {
     ceHeaders.add(SPECVERSION, "1.0");
     ceHeaders.add(ID, UUID.randomUUID()
         .toString());
-    ceHeaders.add(TYPE, "UpperCasedEvent");
-    ceHeaders.add(SOURCE, "http://localhost:8080/uppercase");
+    ceHeaders.add(TYPE, EventType.UPPER_CASE_REQUEST_EVENT);
+    ceHeaders.add(SOURCE, "http://localhost:8080/");
     ceHeaders.add(SUBJECT, "Convert to UpperCase");
 
     ResponseEntity<String> response = this.rest.exchange(
-        RequestEntity.post(new URI("/UppercaseRequestedEvent"))
+        RequestEntity.post(new URI("/" + EventType.UPPER_CASE_REQUEST_EVENT))
             .contentType(MediaType.APPLICATION_JSON)
             .headers(ceHeaders)
             .body(input),
@@ -85,8 +85,8 @@ public class SpringCloudEventsApplicationTests {
     ceHeaders.add(SPECVERSION, "1.0");
     ceHeaders.add(ID, UUID.randomUUID()
       .toString());
-    ceHeaders.add(TYPE, "UppercaseRequestedEvent");
-    ceHeaders.add(SOURCE, "http://localhost:8080/uppercase");
+    ceHeaders.add(TYPE, EventType.UPPER_CASE_REQUEST_EVENT);
+    ceHeaders.add(SOURCE, "http://localhost:8080/");
     ceHeaders.add(SUBJECT, "Convert to UpperCase");
 
     ResponseEntity<String> response = this.rest.exchange(
@@ -108,4 +108,70 @@ public class SpringCloudEventsApplicationTests {
     assertThat(output.getOutput(), equalTo("HELLO"));
     assertThat(output.getError(), nullValue());
   }
+
+  /**
+   * test to route event to AppendStringFunction Function, with ce-type[UPPER_CASE_DONE_EVENT]
+   */
+  @Test
+  public void testAppendStringOnType() throws Exception {
+
+    Input input = new Input();
+
+    input.setInput("HELLO");
+
+    HttpHeaders ceHeaders = new HttpHeaders();
+    ceHeaders.add(SPECVERSION, "1.0");
+    ceHeaders.add(ID, UUID.randomUUID().toString());
+    ceHeaders.add(TYPE, EventType.UPPER_CASE_DONE_EVENT);
+    ceHeaders.add(SOURCE, "http://localhost:8080/");
+
+    ResponseEntity<String> response = this.rest.exchange(
+            RequestEntity.post(new URI("/"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .headers(ceHeaders)
+                    .body(input),
+            String.class);
+
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    String body = response.getBody();
+    assertThat(body, notNullValue());
+    Output output = objectMapper.readValue(body, Output.class);
+    assertThat(output, notNullValue());
+    assertThat(output.getInput(), equalTo("HELLO"));
+//    assertThat(output.getOperation(), equalTo("Appended extra string"));
+    assertThat(output.getOutput(), equalTo("HELLO-world"));
+    assertThat(output.getError(), nullValue());
+    assertThat(response.getHeaders().getFirst("Ce-Type"), equalTo(EventType.ALL_DONE_EVENT));
+
+  }
+
+  /**
+   * test to route event to DisplayFunction Function, with ce-type[ALL_DONE_EVENT]
+   */
+  @Test
+  public void testDisplayFunctionOnType() throws Exception {
+
+    Input input = new Input();
+
+    input.setInput("HELLO-world");
+
+    HttpHeaders ceHeaders = new HttpHeaders();
+    ceHeaders.add(SPECVERSION, "1.0");
+    ceHeaders.add(ID, UUID.randomUUID().toString());
+    ceHeaders.add(TYPE, EventType.ALL_DONE_EVENT);
+    ceHeaders.add(SOURCE, "http://localhost:8080/");
+
+    ResponseEntity<String> response = this.rest.exchange(
+            RequestEntity.post(new URI("/"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .headers(ceHeaders)
+                    .body(input),
+            String.class);
+
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    String body = response.getBody();
+    assertThat(body, equalTo("ok"));
+
+  }
+
 }

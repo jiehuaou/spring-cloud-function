@@ -15,12 +15,13 @@ import java.util.logging.Logger;
 
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.*;
 import static org.springframework.cloud.function.cloudevent.CloudEventMessageUtils.SUBJECT;
+import static uppercase.EventType.ALL_DONE_EVENT;
 
 /**
  * does not return Message<T> ( CloudEvent ), 
  * which will not be processed by Broker, meaning the event flow ending here.
  */
-@Component("DoneEvent")
+@Component(ALL_DONE_EVENT)
 public class DisplayFunction implements Function<Message<Input>, String> {
     private static final Logger LOGGER = Logger.getLogger(DisplayFunction.class.getName());
 
