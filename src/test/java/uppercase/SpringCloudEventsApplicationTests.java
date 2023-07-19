@@ -37,7 +37,7 @@ public class SpringCloudEventsApplicationTests {
    * test to route event to UppercaseRequestedEvent Function, via path '/UppercaseRequestedEvent'
    */
   @Test
-  public void testUpperCaseJsonInput() throws Exception {
+  public void testUpperCaseViaPath() throws Exception {
 
     Input input = new Input();
 
@@ -75,7 +75,7 @@ public class SpringCloudEventsApplicationTests {
    * test to route event to UppercaseRequestedEvent Function, with ce-type['UppercaseRequestedEvent']
    */
   @Test
-  public void testUpperCaseRoutingBasedOnType() throws Exception {
+  public void testUpperCaseViaType() throws Exception {
 
     Input input = new Input();
 
